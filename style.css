@@ -1,0 +1,426 @@
+:root {
+  /* --- Paleta de Cores Acessível (WCAG AAA) --- */
+
+  /* Fundo da Página (Simula o Browser) */
+  --page-bg: #eef2f5;
+
+  /* Corpo da Calculadora */
+  --calc-bg: #ffffff;
+  --calc-border: #333333;
+  --text-color: #000000;
+
+  /* Visor */
+  --display-bg: #121212;
+  --display-text: #ffff00; /* Amarelo no Preto (Alto Contraste Padrão Ouro) */
+
+  /* Botões Numéricos */
+  --btn-num-bg: #e0e0e0;
+  --btn-num-text: #000000;
+
+  /* Botões de Operação (+ - * /) */
+  --btn-op-bg: #1d5895;
+  --btn-op-text: #ffffff;
+
+  /* AÇÃO DE CORREÇÃO (Laranja - Substitui Vermelho) */
+  --btn-action-bg-clear: #d3433c;
+  --btn-action-bg: #e4863f;
+  --btn-action-text: #000000; /* Texto Preto para contraste AAA */
+
+  /* RESULTADO (Azul - Substitui Verde) */
+  --btn-result-bg: #267d3a;
+  --btn-result-text: #ffffff;
+
+  /* Assistente e Configurações */
+  --btn-assist-bg: #673ab7; /* Roxo */
+  --btn-assist-text: #ffffff;
+  --btn-settings-bg: #eeeeee;
+
+  /* Tipografia */
+  --font-main: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  /* Escala Base (Controlada pelo Menu) */
+  --base-scale: 1;
+}
+
+/* --- MODO ESCURO (ALTO CONTRASTE) --- */
+body.dark-mode {
+  --page-bg: #000000;
+  --calc-bg: #1a1a1a;
+  --calc-border: #666666;
+  --text-color: #ffffff;
+
+  --btn-num-bg: #e0e0e0;
+  --btn-num-text: #000000;
+
+  --btn-op-bg: #5da0f7;
+
+  /* Mantemos Laranja e Azul pois funcionam bem no escuro com alto brilho */
+  --btn-action-bg: #e65100;
+  --btn-result-bg: #267d3a;
+
+  --btn-settings-bg: #333;
+}
+
+* {
+  box-sizing: border-box;
+  touch-action: manipulation;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--page-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 10px;
+  transition: background 0.3s;
+}
+
+/* Container Principal que Escala */
+.app-container {
+  /* O tamanho de TUDO aqui dentro depende da fonte base */
+  font-size: calc(16px * var(--base-scale));
+
+  width: 350px;
+  max-width: 24em; /* Largura proporcional */
+  background-color: var(--calc-bg);
+  border-radius: 1.2em;
+  padding: 1.2em;
+  border: 0.25em solid var(--calc-border);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+/* Cabeçalho: Logo + Botão Config */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8em;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-weight: bold;
+  font-size: 1.4em;
+  color: var(--text-color);
+}
+
+.logo-area img {
+  width: 50px;
+}
+
+/* Logo CSS (Laranja e Azul - Nova Identidade) */
+.logo-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 1.5em;
+  height: 1.5em;
+  border: 2px solid var(--text-color);
+}
+.sq {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.6em;
+  font-weight: bold;
+}
+.sq-blue {
+  background: #1976d2;
+}
+.sq-orange {
+  background: #f57c00;
+}
+.sq-yellow {
+  background: #ffd600;
+  color: black;
+}
+.sq-cyan {
+  background: #00bcd4;
+}
+
+/* Botão de Engrenagem */
+.settings-btn {
+  background: var(--btn-settings-bg);
+  color: var(--text-color);
+  border: 2px solid var(--calc-border);
+  border-radius: 0.5em;
+  width: 2.5em;
+  height: 2.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.settings-btn:active {
+  transform: scale(0.95);
+}
+.settings-btn svg {
+  width: 1.5em;
+  height: 1.5em;
+  fill: currentColor;
+}
+
+/* Visor */
+.display {
+  background-color: var(--display-bg);
+  color: var(--display-text);
+  padding: 0.8em;
+  border-radius: 0.6em;
+  text-align: right;
+  margin-bottom: 0.8em;
+  border: 0.15em solid #555;
+  min-height: 4.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+.prev-val {
+  font-size: 0.9em;
+  opacity: 0.7;
+  min-height: 1.2em;
+  margin-bottom: 0.2em;
+}
+.curr-val {
+  font-size: 2.5em;
+  font-weight: bold;
+  word-break: break-all;
+  line-height: 1;
+}
+
+/* Botão Assistente */
+.assist-btn {
+  width: 100%;
+  height: 10px;
+  background-color: var(--btn-assist-bg);
+  color: var(--btn-assist-text);
+  border: none;
+  padding: 0.8em;
+  border-radius: 0.6em;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  margin-bottom: 1em;
+  box-shadow: 0 0.2em 0 rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s;
+}
+.assist-btn:active {
+  transform: translateY(0.2em);
+  box-shadow: none;
+}
+
+/* Teclado Grid */
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6em;
+}
+
+button.key {
+  height: 2em; /* Altura generosa */
+  border: none;
+  border-radius: 0.4em;
+  font-size: 1.4em;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0.2em 0 rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: filter 0.1s, transform 0.1s;
+}
+button.key:active {
+  transform: translateY(0.2em);
+  box-shadow: none;
+}
+
+.k-num {
+  background: var(--btn-num-bg);
+  color: var(--btn-num-text);
+}
+.k-op {
+  background: var(--btn-op-bg);
+  color: var(--btn-op-text);
+  font-size: 1.6em;
+}
+
+/* APLICAÇÃO DAS CORES ACESSÍVEIS */
+.k-del {
+  background: var(--btn-action-bg);
+  color: var(--btn-op-text);
+}
+.k-clear {
+  background: var(--btn-action-bg-clear);
+  color: var(--btn-op-text);
+  grid-column: span 2;
+  font-size: 1.2em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.k-eq {
+  background: var(--btn-result-bg);
+  color: var(--btn-result-text);
+  grid-column: span 2;
+}
+
+/* --- MODAIS (Configuração e Ajuda) --- */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+}
+
+.modal-card {
+  background: var(--calc-bg);
+  color: var(--text-color);
+  width: 100%;
+  max-width: 400px;
+  border-radius: 1em;
+  padding: 1.5em;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  border: 0.2em solid var(--btn-assist-bg);
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  font-size: 1rem; /* Reseta fonte para manter legível mesmo com zoom extremo na base */
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5em;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 0.5em;
+}
+.modal-title {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+.close-icon {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+/* Estilos do Menu de Configuração */
+.cfg-group {
+  margin-bottom: 1.5em;
+}
+.cfg-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  color: var(--text-color);
+  font-size: 1.1em;
+}
+
+.btn-theme-toggle {
+  width: 100%;
+  padding: 1em;
+  border: 2px solid var(--text-color);
+  background: transparent;
+  color: var(--text-color);
+  border-radius: 0.5em;
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+.btn-theme-toggle:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.font-ctrl-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.btn-font {
+  flex: 1;
+  padding: 0.8em;
+  border: none;
+  border-radius: 0.5em;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+}
+.btn-font:active {
+  transform: translateY(3px);
+  box-shadow: none;
+}
+.f-minus {
+  background: var(--btn-action-bg);
+  color: black;
+}
+.f-plus {
+  background: var(--btn-result-bg);
+}
+
+.font-val {
+  font-weight: bold;
+  min-width: 60px;
+  text-align: center;
+  font-size: 1.1em;
+}
+
+.btn-done {
+  width: 100%;
+  padding: 1em;
+  margin-top: 1em;
+  background: var(--text-color);
+  color: var(--calc-bg);
+  border: none;
+  border-radius: 0.5em;
+  font-weight: bold;
+  font-size: 1.1em;
+  cursor: pointer;
+}
+
+/* Cartões de Ajuda */
+.help-card {
+  background: #f9f9f9;
+  border-left: 6px solid #ccc;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.help-card h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.1em;
+  color: #000;
+}
+.icon-mini {
+  display: inline-block;
+  width: 20px;
+  text-align: center;
+  margin-right: 5px;
+}

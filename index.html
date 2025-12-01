@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora Sanji - Acessibilidade Total</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <div class="header">
+        <div class="logo-area">
+          <img src="icons/logo_visuMath.png" />
+        </div>
+
+        <button
+          class="settings-btn"
+          id="openSettingsBtn"
+          aria-label="Configurações"
+        >
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.85,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.08-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div class="display">
+        <div id="prev" class="prev-val"></div>
+        <div id="curr" class="curr-val">0</div>
+      </div>
+
+      <button class="assist-btn" id="openHelpBtn">
+        <span style="font-size: 1.2em">🛈</span> ASSISTENTE
+      </button>
+
+      <div class="keypad">
+        <button class="key k-clear" id="clearBtn">LIMPAR</button>
+        <button class="key k-del" id="deleteBtn">⌫</button>
+
+        <button class="key k-op" data-op="÷">÷</button>
+
+        <button class="key k-num">7</button>
+        <button class="key k-num">8</button>
+        <button class="key k-num">9</button>
+        <button class="key k-op" data-op="×">×</button>
+
+        <button class="key k-num">4</button>
+        <button class="key k-num">5</button>
+        <button class="key k-num">6</button>
+        <button class="key k-op" data-op="-">-</button>
+
+        <button class="key k-num">1</button>
+        <button class="key k-num">2</button>
+        <button class="key k-num">3</button>
+        <button class="key k-op" data-op="+">+</button>
+
+        <button class="key k-num">0</button>
+        <button class="key k-num">,</button>
+        <button class="key k-eq" id="computeBtn" style="grid-column: span 2">
+          =
+        </button>
+      </div>
+    </div>
+
+    <div id="settingsModal" class="modal-overlay" data-close-outside>
+      <div class="modal-card" style="border-color: #555">
+        <div class="modal-header">
+          <span class="modal-title">⚙️ Configurações</span>
+          <button
+            class="close-icon close-modal-btn"
+            data-modal-id="settingsModal"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div class="cfg-group">
+          <label class="cfg-label">Tema Visual</label>
+          <button class="btn-theme-toggle" id="toggleThemeBtn">
+            <span>◑</span> Alternar Contraste (Claro/Escuro)
+          </button>
+        </div>
+
+        <div class="cfg-group">
+          <label class="cfg-label">Tamanho da Letra</label>
+          <div class="font-ctrl-row">
+            <button class="btn-font f-minus" data-scale="-0.1">A-</button>
+            <span class="font-val" id="scaleVal">100%</span>
+            <button class="btn-font f-plus" data-scale="0.1">A+</button>
+          </div>
+        </div>
+
+        <button class="btn-done close-modal-btn" data-modal-id="settingsModal">
+          Concluído
+        </button>
+      </div>
+    </div>
+
+    <div id="helpModal" class="modal-overlay" data-close-outside>
+      <div class="modal-card" style="border-color: var(--btn-assist-bg)">
+        <div class="modal-header">
+          <span class="modal-title" style="color: var(--btn-assist-bg)"
+            >💁‍♀️ Assistente Sanji</span
+          >
+          <button class="close-icon close-modal-btn" data-modal-id="helpModal">
+            ✕
+          </button>
+        </div>
+
+        <div class="help-card" style="border-left-color: #1976d2">
+          <h3>🔵 Somar (Conta de Mais)</h3>
+          1. Digite o número.<br />
+          2. Aperte
+          <b
+            style="
+              background: #37474f;
+              color: white;
+              padding: 0 4px;
+              border-radius: 3px;
+            "
+            >+</b
+          >
+          e depois o outro número.<br />
+          3. Finalize apertando o botão azul
+          <b
+            style="
+              background: #1976d2;
+              color: white;
+              padding: 0 4px;
+              border-radius: 3px;
+            "
+            >=</b
+          >.
+        </div>
+
+        <div class="help-card" style="border-left-color: #00d9ff">
+          <h3>🔵 Subtrair (Conta de Menos)</h3>
+          1. Digite o número.<br />
+          2. Aperte
+          <b
+            style="
+              background: #37474f;
+              color: white;
+              padding: 0 4px;
+              border-radius: 3px;
+            "
+            >-</b
+          >
+          e depois o outro número.<br />
+          3. Finalize apertando o botão azul
+          <b
+            style="
+              background: #00d9ff;
+              color: white;
+              padding: 0 4px;
+              border-radius: 3px;
+            "
+            >=</b
+          >.
+        </div>
+
+        <div class="help-card" style="border-left-color: #f57c00">
+          <h3>🟠 Corrigir Erros</h3>
+          • Use
+          <b
+            style="
+              background: #f57c00;
+              color: black;
+              padding: 0 4px;
+              border-radius: 3px;
+            "
+            >⌫</b
+          >
+          para apagar só o último número.<br />
+          • Use
+          <b
+            style="
+              background: #f57c00;
+              color: black;
+              padding: 0 4px;
+              border-radius: 3px;
+            "
+            >LIMPAR</b
+          >
+          para apagar tudo.
+        </div>
+
+        <button
+          class="btn-done close-modal-btn"
+          data-modal-id="helpModal"
+          style="background: var(--btn-assist-bg)"
+        >
+          Entendi
+        </button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
