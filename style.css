@@ -82,7 +82,6 @@ body {
 .app-container {
   /* O tamanho de TUDO aqui dentro depende da fonte base */
   font-size: calc(16px * var(--base-scale));
-
   width: 350px;
   max-width: 24em; /* Largura proporcional */
   background-color: var(--calc-bg);
